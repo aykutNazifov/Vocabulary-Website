@@ -7,7 +7,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    await connectDb();
+    try {
+      await connectDb();
+    } catch (error) {
+      console.log("connect db error", error);
+    }
 
     try {
       const newWord = new Word(req.body);
@@ -19,7 +23,12 @@ export default async function handler(
     }
   } else if (req.method === "GET") {
     const level = req.query.level;
-    connectDb();
+
+    try {
+      await connectDb();
+    } catch (error) {
+      console.log("connect db error", error);
+    }
 
     if (level) {
       const words = await Word.find({ level: level });
