@@ -7,12 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    try {
-      await connectDb();
-    } catch (error) {
-      res.status(501).json(error);
-    }
-
+    await connectDb();
     try {
       const newWord = new Word(req.body);
       const word = await newWord.save();
