@@ -26,16 +26,15 @@ export default async function handler(
 
     try {
       await connectDb();
+      if (level) {
+        const words = await Word.find({ level: level });
+        res.status(200).json(words);
+      } else {
+        const words = await Word.find();
+        res.status(200).json(words);
+      }
     } catch (error) {
       res.status(501).json(error);
-    }
-
-    if (level) {
-      const words = await Word.find({ level: level });
-      res.status(200).json(words);
-    } else {
-      const words = await Word.find();
-      res.status(200).json(words);
     }
   } else {
     res.status(500).json("Not allowed!");
