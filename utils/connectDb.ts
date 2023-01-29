@@ -1,4 +1,6 @@
 // @ts-nocheck
+// @ts-expect-error
+
 import mongoose from "mongoose";
 
 const MONGO_URI = process.env.MONGO_URI;
