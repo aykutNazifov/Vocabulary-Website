@@ -10,7 +10,7 @@ export default async function handler(
     try {
       await connectDb();
     } catch (error) {
-      console.log("connect db error", error);
+      res.status(501).json(error);
     }
 
     try {
