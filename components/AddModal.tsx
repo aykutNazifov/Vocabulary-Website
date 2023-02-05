@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 enum ELevel {
-  "A",
-  "B",
-  "C",
+  "A" = "A",
+  "B" = "B",
+  "C" = "C",
 }
 
 interface IAddModalProps {

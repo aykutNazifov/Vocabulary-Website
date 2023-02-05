@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BsFillVolumeUpFill } from "react-icons/bs";
+import { BsCheckLg, BsFillVolumeUpFill } from "react-icons/bs";
 
 export interface IWord {
   _id: string;
@@ -30,10 +30,28 @@ const ContentHeader: React.FC<IContentHeaderProps> = ({
 
   useEffect(() => {
     if (typeof Audio != "undefined") {
-      const newAudio = new Audio(word.audio);
+      const newAudio = new Audio(word?.audio);
       setAudio(newAudio);
     }
   }, [word]);
+
+  // const keyboardListener = (e: any) => {
+  //   e.preventDefault();
+  //   if (e.code === "KeyA") {
+  //     audio?.play();
+  //   } else if (e.code === "KeyS") {
+  //     console.log(e.code);
+  //     setIsShow(!isShow);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener("keydown", keyboardListener);
+
+  //   return () => {
+  //     window.removeEventListener("keydown", keyboardListener);
+  //   };
+  // }, [word]);
 
   return (
     <div className="mt-20 flex flex-col items-center">
@@ -44,7 +62,7 @@ const ContentHeader: React.FC<IContentHeaderProps> = ({
         >
           <BsFillVolumeUpFill />
         </button>
-        <p className="font-medium text-2xl ">{word.word}</p>
+        <p className="font-medium text-2xl ">{word?.word}</p>
         {isShow && (
           <>
             <span>{"=>"}</span>

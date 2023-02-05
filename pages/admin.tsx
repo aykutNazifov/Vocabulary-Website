@@ -14,6 +14,8 @@ const Admin = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedWord, setSelectedWord] = useState({});
   const [level, setLevel] = useState("All");
+  const [searchValue, setSearchValue] = useState("");
+  const [filtredArray, setFiltredArray] = useState([]);
 
   const queryClient = useQueryClient();
 
@@ -33,18 +35,35 @@ const Admin = () => {
   });
 
   const getWords = async () => {
+    let url = level === "All" ? "/api/words" : `api/words?level=${level}`;
     try {
-      const response = await axios.get("/api/words");
+      const response = await axios.get(url);
       return response.data;
     } catch (error) {
       console.log("axios err", error);
     }
   };
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["words"],
     queryFn: getWords,
   });
+
+  useEffect(() => {
+    if (searchValue === "") {
+      setFiltredArray(data);
+    } else {
+      setFiltredArray(
+        data.filter((w: any) =>
+          w.word.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      );
+    }
+  }, [searchValue, data]);
+
+  useEffect(() => {
+    refetch();
+  }, [level]);
 
   useEffect(() => {
     if (!user) {
@@ -87,7 +106,15 @@ const Admin = () => {
             <option value="B">B</option>
             <option value="C">C</option>
           </select>
-          <div>Search</div>
+          <div>
+            <input
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              type="text"
+              placeholder="Search a word..."
+              className="border-b-2 border-b-primary border-solid bg-transparent px-2"
+            />
+          </div>
           <button
             onClick={() => setShowAddModal(true)}
             className="bg-white text-primary px-3 py-1 cursor-pointer rounded-md hover:bg-secondary hover:text-white transition-colors duration-300"
@@ -96,7 +123,7 @@ const Admin = () => {
           </button>
         </div>
         <div className="mt-10">
-          {data.map((item: any) => (
+          {filtredArray.map((item: any) => (
             <div
               key={item._id}
               className="w-full flex items-center gap-3 border-b border-solid border-white py-1 px-1"
