@@ -35,24 +35,6 @@ const ContentHeader: React.FC<IContentHeaderProps> = ({
     }
   }, [word]);
 
-  // const keyboardListener = (e: any) => {
-  //   e.preventDefault();
-  //   if (e.code === "KeyA") {
-  //     audio?.play();
-  //   } else if (e.code === "KeyS") {
-  //     console.log(e.code);
-  //     setIsShow(!isShow);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("keydown", keyboardListener);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", keyboardListener);
-  //   };
-  // }, [word]);
-
   return (
     <div className="mt-20 flex flex-col items-center">
       <div className="flex items-center gap-2 mb-5">

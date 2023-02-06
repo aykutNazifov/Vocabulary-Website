@@ -22,7 +22,7 @@ interface IContentBodyProps {
 
 const ContentBody: React.FC<IContentBodyProps> = ({ isShow, word }) => {
   return (
-    <div className="body">
+    <div className="max-w-[800px]">
       {isShow && (
         <>
           <div className="mb-4">

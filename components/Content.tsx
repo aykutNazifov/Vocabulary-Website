@@ -14,7 +14,8 @@ const Content = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [level, setLevel] = useState("All");
   const [wordsCount, setWordsCount] = useState("All");
-  const [slicedWords, setSlicedWords] = useState([]);
+  const [slicedWords, setSlicedWords] = useState<Array<any>>([]);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
   const getWords = async () => {
     let url = level === "All" ? "/api/words" : `api/words?level=${level}`;
@@ -51,13 +52,24 @@ const Content = () => {
     }
   }, [wordsCount, data]);
 
-  console.log(slicedWords);
+  useEffect(() => {
+    if (typeof Audio != "undefined") {
+      const newAudio = new Audio(slicedWords[wordIndex]?.audio);
+      setAudio(newAudio);
+    }
+  }, [wordIndex]);
+
+  console.log(audio);
 
   const changeWordIndex = (e: any) => {
     if (e.code === "ArrowRight") {
       setWordIndex(wordIndex === slicedWords.length - 1 ? 0 : wordIndex + 1);
     } else if (e.code === "ArrowLeft") {
       setWordIndex(wordIndex === 0 ? slicedWords.length - 1 : wordIndex - 1);
+    } else if (e.code === "KeyS") {
+      setIsShow((prev) => !prev);
+    } else if (e.code === "KeyA") {
+      audio?.play();
     }
   };
 
@@ -68,7 +80,7 @@ const Content = () => {
     return () => {
       window.removeEventListener("keydown", changeWordIndex);
     };
-  }, [wordIndex]);
+  }, [wordIndex, setIsShow, audio]);
 
   if (isLoading && slicedWords.length === 0) {
     return <h1>Loading...</h1>;
