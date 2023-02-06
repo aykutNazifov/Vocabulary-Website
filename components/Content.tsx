@@ -30,6 +30,7 @@ const Content = () => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["words"],
     queryFn: getWords,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
