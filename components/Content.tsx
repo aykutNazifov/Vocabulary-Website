@@ -6,8 +6,10 @@ import axios from "axios";
 import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
+  BsTypeH1,
 } from "react-icons/bs";
 import { shuffleArray } from "@/utils/shuffleArray";
+import ReactLoading from "react-loading";
 
 const Content = () => {
   const [isShow, setIsShow] = useState(false);
@@ -60,8 +62,6 @@ const Content = () => {
     }
   }, [wordIndex]);
 
-  console.log(audio);
-
   const changeWordIndex = (e: any) => {
     if (e.code === "ArrowRight") {
       setWordIndex(wordIndex === slicedWords.length - 1 ? 0 : wordIndex + 1);
@@ -84,7 +84,11 @@ const Content = () => {
   }, [wordIndex, setIsShow, audio]);
 
   if (isLoading && slicedWords.length === 0) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="flex items-center justify-center pt-20">
+        <ReactLoading type="spin" color="#fff" height={70} width={70} />;
+      </div>
+    );
   }
 
   return (
@@ -100,6 +104,8 @@ const Content = () => {
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
+            <option value="T">T</option>
+            <option value="C2">C2</option>
           </select>
 
           <select
@@ -115,32 +121,38 @@ const Content = () => {
             <option value="100">100</option>
           </select>
         </div>
-        <div
-          className="absolute top-1/2 right-10 text-4xl text-secondary"
-          onClick={() =>
-            slicedWords.length - 1 === wordIndex
-              ? setWordIndex(0)
-              : setWordIndex(wordIndex + 1)
-          }
-        >
-          <BsFillArrowRightCircleFill />
-        </div>
-        <div
-          className="absolute top-1/2 left-10 text-4xl text-secondary"
-          onClick={() =>
-            wordIndex === 0
-              ? setWordIndex(slicedWords.length - 1)
-              : setWordIndex(wordIndex - 1)
-          }
-        >
-          <BsFillArrowLeftCircleFill />
-        </div>
-        <ContentHeader
-          isShow={isShow}
-          setIsShow={setIsShow}
-          word={slicedWords[wordIndex]}
-        />
-        <ContentBody isShow={isShow} word={slicedWords[wordIndex]} />
+        {data.length === 0 ? (
+          <h3>Dont have words on this level yet..</h3>
+        ) : (
+          <>
+            <div
+              className="absolute top-1/2 right-10 text-4xl text-secondary"
+              onClick={() =>
+                slicedWords.length - 1 === wordIndex
+                  ? setWordIndex(0)
+                  : setWordIndex(wordIndex + 1)
+              }
+            >
+              <BsFillArrowRightCircleFill />
+            </div>
+            <div
+              className="absolute top-1/2 left-10 text-4xl text-secondary"
+              onClick={() =>
+                wordIndex === 0
+                  ? setWordIndex(slicedWords.length - 1)
+                  : setWordIndex(wordIndex - 1)
+              }
+            >
+              <BsFillArrowLeftCircleFill />
+            </div>
+            <ContentHeader
+              isShow={isShow}
+              setIsShow={setIsShow}
+              word={slicedWords[wordIndex]}
+            />
+            <ContentBody isShow={isShow} word={slicedWords[wordIndex]} />
+          </>
+        )}
       </div>
     </div>
   );

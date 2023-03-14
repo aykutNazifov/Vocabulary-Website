@@ -105,6 +105,8 @@ const Admin = () => {
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
+            <option value="T">T</option>
+            <option value="C2">C2</option>
           </select>
           <div>
             <input

@@ -24,7 +24,11 @@ const wordSchema = new mongoose.Schema(
     },
     level: {
       type: String,
-      enum: ["A", "B", "C"],
+      enum: ["A", "B", "C", "T", "C2"],
+    },
+    show: {
+      type: Boolean,
+      default: true,
     },
   },
   {

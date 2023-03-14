@@ -7,6 +7,8 @@ enum ELevel {
   "A" = "A",
   "B" = "B",
   "C" = "C",
+  "T" = "T",
+  "C2" = "C2",
 }
 
 interface IAddModalProps {
@@ -23,6 +25,7 @@ interface IDataState {
   image: string;
   audio: string;
   level: ELevel;
+  show: boolean;
 }
 
 const AddModal: React.FC<IAddModalProps> = ({
@@ -38,6 +41,7 @@ const AddModal: React.FC<IAddModalProps> = ({
     image: "",
     audio: "",
     level: ELevel.A,
+    show: true,
   });
 
   console.log("data", data);
@@ -66,14 +70,14 @@ const AddModal: React.FC<IAddModalProps> = ({
     }
   };
 
-  const mutation = useMutation({
+  const addMutation = useMutation({
     mutationFn: addWord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["words"] });
     },
   });
 
-  const mutation2 = useMutation({
+  const updateMutation = useMutation({
     mutationFn: updateWord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["words"] });
@@ -87,16 +91,20 @@ const AddModal: React.FC<IAddModalProps> = ({
   }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
-    setData({ ...data, [e.target.id]: e.target.value });
+    if (e.target.id === "show") {
+      setData({ ...data, [e.target.id]: e.target.checked });
+    } else {
+      setData({ ...data, [e.target.id]: e.target.value });
+    }
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isEdit) {
-      mutation2.mutate({ ...data });
+      updateMutation.mutate({ ...data });
     } else {
-      mutation.mutate({ ...data });
+      addMutation.mutate({ ...data });
     }
   };
   return (
@@ -180,17 +188,34 @@ const AddModal: React.FC<IAddModalProps> = ({
             value={data.level}
             className="w-full h-10 bg-transparent border border-solid border-white px-1"
           >
-            <option className="bg-secondary text-white" value="A">
+            <option className="bg-secondary text-white" value={ELevel.A}>
               A
             </option>
-            <option className="bg-secondary text-white" value="B">
+            <option className="bg-secondary text-white" value={ELevel.B}>
               B
             </option>
-            <option className="bg-secondary text-white" value="C">
+            <option className="bg-secondary text-white" value={ELevel.C}>
               C
+            </option>
+            <option className="bg-secondary text-white" value={ELevel.T}>
+              T
+            </option>
+            <option className="bg-secondary text-white" value={ELevel.C2}>
+              C2
             </option>
           </select>
         </div>
+        <div className="flex gap-1 mb-5">
+          <label htmlFor="level">Show</label>
+          <input
+            className="w-5 h-5"
+            type="checkbox"
+            id="show"
+            checked={data.show}
+            onChange={onChange}
+          />
+        </div>
+
         <button className="bg-white text-primary px-5 py-1 cursor-pointer rounded-md hover:bg-secondary hover:text-white transition-colors duration-300 flex ml-auto">
           {isEdit ? "Update" : "Add"}
         </button>
