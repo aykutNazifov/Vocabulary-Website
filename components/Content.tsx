@@ -86,7 +86,7 @@ const Content = () => {
   if (isLoading && slicedWords.length === 0) {
     return (
       <div className="flex items-center justify-center pt-20">
-        <ReactLoading type="spin" color="#fff" height={70} width={70} />;
+        <ReactLoading type="spin" color="#fff" height={70} width={70} />
       </div>
     );
   }
